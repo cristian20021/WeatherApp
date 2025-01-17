@@ -9,8 +9,8 @@
     <body>
         <div class="card">
             <div class="search">
-                <input type="text" placeholder="City Name" spellcheck="false">
-                <button><img src="images/search.png" alt=""></button>
+                <input type="text" placeholder="City Name" spellcheck="false" class="user-input">
+                <button class="search_btn" onclick="check()"><img src="images/search.png" alt=""></button>
             </div>
             <div class="weather">
                 <img src="images/rain.png" class = "weather-icon" alt="">
@@ -27,13 +27,36 @@
                     <div class="col">
                         <img src="images/wind.png" alt="">
                         <div>
-                            <p class="humidity">20 km/h</p>
+                            <p class="wind">20 km/h</p>
                             <p>Wind</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            const api_key = ''
+            const link = "https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+            async function check(){
+                var userInputValue = document.getElementsByClassName('user-input')[0].value;
 
+                const response = await fetch(link+userInputValue+`&appid=${api_key}`)
+                var data = await response.json()
+                var temp = data.main.temp
+                var humidity = data.main.humidity
+                var wind = data.wind.speed
+                
+         
+                document.getElementsByClassName('city')[0].innerHTML = userInputValue
+                document.getElementsByClassName('temp')[0].innerHTML = temp
+                document.getElementsByClassName('wind')[0].innerHTML = wind
+                document.getElementsByClassName('humidity')[0].innerHTML = humidity
+                console.log("images/"+data.weather[0].main.toLowerCase());
+
+                document.getElementsByClassName("weather-icon")[0].src="images/"+data.weather[0].main.toLowerCase()+".png"
+
+            }
+            check()
+        </script>
     </body>
 </html>
